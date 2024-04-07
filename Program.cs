@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Net.Http.Headers;
+// Console.Clear();
 
 List<Plant> plants = new List<Plant>
 {
@@ -67,7 +67,47 @@ while (choice != "0")
     choice = Console.ReadLine();
     if (choice == "0")
     {
-        Console.WriteLine("Goodbye!");
+        string yesOrNo = null;
+        while (yesOrNo == null)
+        {
+
+
+            Console.WriteLine(@"Are you you want to leaf? You haven't botany plants yet.
+        (Select 'yes' or 'no')");
+            yesOrNo = Console.ReadLine();
+            if (yesOrNo == "yes")
+            {
+
+                Console.WriteLine(@"If you can't beet 'em, join 'em.
+            Press any key to leaf");
+                Console.ReadKey();
+
+                Console.WriteLine("Begonia with you!");
+
+            }
+            else if (yesOrNo == "no")
+            {
+
+                Console.WriteLine("Kale Yeah!");
+                choice = null;
+
+                Console.WriteLine(@"Choose an option:
+    
+    1. View All Plants
+    2. Give Up For Adoption
+    3. Adopt A Plant
+    4. Delete A Plant");
+                Console.ReadLine();
+
+
+            }
+            else
+            {
+                yesOrNo = null;
+                Console.WriteLine("I beg your garden? That wasn't an option.");
+            }
+        }
+
     }
     else if (choice == "1")
     {
@@ -109,15 +149,26 @@ void AdoptAPlant()
     Console.WriteLine(@$"You chose:
         {chosenPlant.Species}. It is located in {chosenPlant.City}, {chosenPlant.ZIP}. 
         This {chosenPlant.Species} costs ${chosenPlant.AskingPrice}.");
+    Console.WriteLine("Enjoy your new plant. We be-leaf in you!");
 }
 
 
 void ListPlants()
 {
     Console.WriteLine("Plant options:");
-    for (int i = 0; i < plants.Count; i++)
+    foreach (Plant plant in plants)
     {
-        Console.WriteLine($"{i + 1}. {plants[i].Species}");
+        if (plant.Sold == false)
+        {
+            Console.WriteLine(@$"{plant.Species} is located in {plant.City} and
+        is available for ${plant.AskingPrice}.");
+        }
+        else if (plant.Sold == false)
+        {
+            Console.WriteLine(@$"{plant.Species} is located in {plant.City} and
+     was sold for ${plant.AskingPrice}.");
+        }
+
     }
 }
 
@@ -125,24 +176,22 @@ void GivePlantUpForAdoption()
 {
 
 
-    Console.WriteLine("Not ready for plant parenthood? That's okay, no shame. What kind of plant are you giving up?");
+    Console.WriteLine(@"Not ready for plant parenthood? That's okay, no shame. 
+    What kind of plant are you giving up?");
     Console.Write("Species: ");
     string species = Console.ReadLine();
 
     Console.Write("Light Needs: ");
-    double lightneeds = Console.ReadLine();
+    double lightneeds = double.Parse(Console.ReadLine());
 
     Console.Write("Asking Price: ");
-    decimal price = Console.ReadLine();
+    decimal price = decimal.Parse(Console.ReadLine());
 
     Console.Write("City: ");
     string city = Console.ReadLine();
 
     Console.Write("ZIP Code: ");
-    int zip = Console.ReadLine();//fix this line
-
-
-
+    int zip = int.Parse(Console.ReadLine());
 
 
     plants.Add(new Plant()
@@ -161,5 +210,26 @@ void GivePlantUpForAdoption()
 
 void PlantWasAdopted()
 {
+    Console.WriteLine(@"Yay! A plant has found its once and floral home!
+    Which plants needs to be removed from availability?");
+    Console.WriteLine("Available Plants:");
+    ListPlants();
+    int adoptedPlant = int.Parse(Console.ReadLine());
+    if (adoptedPlant <= plants.Count)
+    {
+        plants.RemoveAt(adoptedPlant - 1);
+    }
+    else if (adoptedPlant > plants.Count)
+    {
+        Console.WriteLine(@"That's a thorny issue. What you've selected isn't an option.
+        Please try again.");
+    }
+
+
+
+
+
+
     // .RemoveAt method OR .Remove
 }
+
