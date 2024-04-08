@@ -50,7 +50,8 @@ List<Plant> plants = new List<Plant>
     }
 
 };
-
+Random random = new Random();
+int plantOfTheDay = random.Next(1, plants.Count);
 string greeting = @"Welcome to ExtraVert! 
 We've got the plant baddies for your plant daddy needs!";
 Console.WriteLine(greeting);
@@ -63,7 +64,8 @@ while (choice != "0")
     1. View All Plants
     2. Give Up For Adoption
     3. Adopt A Plant
-    4. Delete A Plant");
+    4. Delete A Plant
+    5. Plant of the Day");
     choice = Console.ReadLine();
     if (choice == "0")
     {
@@ -77,29 +79,13 @@ while (choice != "0")
             yesOrNo = Console.ReadLine();
             if (yesOrNo == "yes")
             {
-
-                Console.WriteLine(@"If you can't beet 'em, join 'em.
-            Press any key to leaf");
-                Console.ReadKey();
-
                 Console.WriteLine("Begonia with you!");
-
             }
             else if (yesOrNo == "no")
             {
 
                 Console.WriteLine("Kale Yeah!");
                 choice = null;
-
-                Console.WriteLine(@"Choose an option:
-    
-    1. View All Plants
-    2. Give Up For Adoption
-    3. Adopt A Plant
-    4. Delete A Plant");
-                Console.ReadLine();
-
-
             }
             else
             {
@@ -125,19 +111,41 @@ while (choice != "0")
     {
         PlantWasAdopted();
     }
+    else if (choice == "5")
+    {
+        PlantOfTheDay();
+    }
 }
 
 void AdoptAPlant()
 {
-    ListPlants();
+
+
+
     Plant chosenPlant = null;
     while (chosenPlant == null)
     {
-        Console.WriteLine("Please choose a plant: ");
+        Console.WriteLine("Please choose a plant from our available options: ");
+
+        List<Plant> availablePlants = plants.Where(plant => !plant.Sold).ToList();
+        foreach (int index in Enumerable.Range(0, availablePlants.Count))
+        {
+            Console.WriteLine($@"{index + 1}. {availablePlants[index].Species} located in {availablePlants[index].City}, {availablePlants[index].ZIP} 
+        costs ${availablePlants[index].AskingPrice}");
+        }
+
+        if (availablePlants.Count == 0)
+        {
+            Console.WriteLine("All of our plants have been adopted, try again later.");
+        }
+
         try
         {
+
+            ListPlants();
             int response = int.Parse(Console.ReadLine().Trim());
-            chosenPlant = plants[response - 1];
+            chosenPlant = availablePlants[response - 1];
+
         }
         catch (Exception ex)
         {
@@ -153,21 +161,18 @@ void AdoptAPlant()
 }
 
 
+
+
 void ListPlants()
 {
     Console.WriteLine("Plant options:");
     foreach (Plant plant in plants)
     {
-        if (plant.Sold == false)
-        {
-            Console.WriteLine(@$"{plant.Species} is located in {plant.City} and
-        is available for ${plant.AskingPrice}.");
-        }
-        else if (plant.Sold == false)
-        {
-            Console.WriteLine(@$"{plant.Species} is located in {plant.City} and
-     was sold for ${plant.AskingPrice}.");
-        }
+
+        Console.WriteLine(@$"{plant.Species} located in {plant.City} 
+            {(plant.Sold ? "was sold" : " is available")} for ${plant.AskingPrice}");
+
+
 
     }
 }
@@ -233,3 +238,9 @@ void PlantWasAdopted()
     // .RemoveAt method OR .Remove
 }
 
+void PlantOfTheDay()
+{
+    Console.WriteLine(@$"Today's featured plant is:
+{plants[plantOfTheDay].Species}! This plant {(plants[plantOfTheDay].Sold ? "was sold" : "is available")} for ${plants[plantOfTheDay].AskingPrice}
+in {plants[plantOfTheDay].City}, {plants[plantOfTheDay].ZIP}.");
+}
