@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // Console.Clear();
 
+using System.Runtime.Serialization;
+
 List<Plant> plants = new List<Plant>
 {
     new Plant()
@@ -14,7 +16,7 @@ List<Plant> plants = new List<Plant>
     },
     new Plant()
     {
-        Species = "Zombie-Ant Fungus",
+        Species = "Lion's Mane Mushroom",
         LightNeeds = 1,
         AskingPrice = 45.99M,
         City = "Ocean City",
@@ -47,6 +49,15 @@ List<Plant> plants = new List<Plant>
         City = "Southington",
         ZIP = 06444,
         Sold = false
+    },
+    new Plant()
+    {
+        Species = "Nipplewort",
+        LightNeeds = 2,
+        AskingPrice = 16.45M,
+        City = "Toad Suck",
+        ZIP = 57209,
+        Sold = false
     }
 
 };
@@ -65,7 +76,8 @@ while (choice != "0")
     2. Give Up For Adoption
     3. Adopt A Plant
     4. Delete A Plant
-    5. Plant of the Day");
+    5. Plant of the Day
+    6. Plant Search");
     choice = Console.ReadLine();
     if (choice == "0")
     {
@@ -115,6 +127,10 @@ while (choice != "0")
     {
         PlantOfTheDay();
     }
+    else if (choice == "6")
+    {
+        PlantSearch();
+    }
 }
 
 void AdoptAPlant()
@@ -142,9 +158,10 @@ void AdoptAPlant()
         try
         {
 
-            ListPlants();
+
             int response = int.Parse(Console.ReadLine().Trim());
             chosenPlant = availablePlants[response - 1];
+            chosenPlant.Sold = true;
 
         }
         catch (Exception ex)
@@ -243,4 +260,45 @@ void PlantOfTheDay()
     Console.WriteLine(@$"Today's featured plant is:
 {plants[plantOfTheDay].Species}! This plant {(plants[plantOfTheDay].Sold ? "was sold" : "is available")} for ${plants[plantOfTheDay].AskingPrice}
 in {plants[plantOfTheDay].City}, {plants[plantOfTheDay].ZIP}.");
+}
+
+void PlantSearch()
+{
+    int userLight = 0;
+
+
+    while (userLight == 0)
+    {
+        try
+        {
+
+            Console.WriteLine("On a scale of 1-5, how much light can you offer a plant?");
+            userLight = int.Parse(Console.ReadLine());
+            if (userLight >= 1 && userLight <= 5)
+            {
+                List<Plant> availableLight = plants.Where(plant => plant.LightNeeds <= userLight).ToList();
+                foreach (Plant plant in plants)
+                {
+                    Console.WriteLine(@$"The following plant(s) meet your criteria:
+                    {plant.Species}. 
+                    This plant's light needs are a {plant.LightNeeds} on the scale.
+                    This {plant.Species} costs ${plant.AskingPrice} and is located in 
+                    {plant.City}, {plant.ZIP}.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("That option is outside of accepted range. Please select a number between 1 and 5.");
+                userLight = 0;
+            }
+
+
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("That was not a valid input. You are the plant version of period cramps.");
+        }
+
+
+    }
 }
