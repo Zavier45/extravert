@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // Console.Clear();
 
-using System.Runtime.Serialization;
+Console.Clear();
 
 List<Plant> plants = new List<Plant>
 {
@@ -86,7 +86,7 @@ while (choice != "0")
         {
 
 
-            Console.WriteLine(@"Are you you want to leaf? You haven't botany plants yet.
+            Console.WriteLine(@"Are you sure you want to leaf? You haven't botany plants yet.
         (Select 'yes' or 'no')");
             yesOrNo = Console.ReadLine();
             if (yesOrNo == "yes")
@@ -277,7 +277,7 @@ void PlantSearch()
             if (userLight >= 1 && userLight <= 5)
             {
                 List<Plant> availableLight = plants.Where(plant => plant.LightNeeds <= userLight).ToList();
-                foreach (Plant plant in plants)
+                foreach (Plant plant in availableLight)
                 {
                     Console.WriteLine(@$"The following plant(s) meet your criteria:
                     {plant.Species}. 
