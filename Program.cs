@@ -205,7 +205,7 @@ void ListPlants()
     foreach (Plant plant in plants)
     {
 
-        Console.WriteLine(@$"{plant.Species} located in {plant.City} 
+        Console.WriteLine(@$"{PlantDetails(plant)} located in {plant.City} 
             {(plant.Sold ? "was sold" : " is available")} for ${plant.AskingPrice}");
 
 
@@ -410,9 +410,9 @@ void PlantSearch()
                 foreach (Plant plant in availableLight)
                 {
                     Console.WriteLine(@$"The following plant(s) meet your criteria:
-                    {plant.Species}. 
+                    {PlantDetails(plant)}. 
                     This plant's light needs are a {plant.LightNeeds} on the scale.
-                    This {PlantDetails} costs ${plant.AskingPrice} and is located in 
+                    This {PlantDetails(plant)} costs ${plant.AskingPrice} and is located in 
                     {plant.City}, {plant.ZIP}.");
                 }
             }
@@ -457,7 +457,7 @@ void PlantStats()
     List<Plant> plantsWithMostLightNeeds = plants.Where(p => p.LightNeeds == mostLightNeeds).ToList();
     foreach (Plant plant in plantsWithMostLightNeeds)
     {
-        Console.WriteLine(@$"The {plant.Species} needs the most sunlight.
+        Console.WriteLine(@$"The {PlantDetails(plant)} needs the most sunlight.
     On a scale of 1 to 5, it needs a {plant.LightNeeds}.
     ");
     }
